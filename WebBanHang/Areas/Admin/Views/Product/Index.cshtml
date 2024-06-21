@@ -1,0 +1,71 @@
+﻿@model List<Product>
+
+<partial name="_Notification" />
+<div class="row mb-4" style="color:#FFC1C1">
+    <div class="col-md-6">
+        <h2>LIST PRODUCT</h2>
+    </div>
+    <div class="col-md-6 text-right ">
+        <a asp-action="Add" class="btn btn-danger m-2">
+            <i class="fas fa-plus"></i>Add new product
+        </a>
+    </div>
+</div>
+<form asp-action="Index" method="GET" class="form-inline">
+    <input type="text" name="search" class="form-control mr-sm-2" placeholder="Search">
+    <button type="submit" class="btn" style="background-color: red; color: white; transition: background-color 0.3s ease;" onmouseover="this.style.backgroundColor='darkturquoise';" onmouseout="this.style.backgroundColor='red';">Search</button>
+</form>
+<br/>
+<table class="table table-bordered table-striped">
+    <thead>
+        <tr style="color:#FFC1C1">
+            <th>Name</th>
+            <th>Price</th>
+            <th>Category</th>
+            <th>Image</th>
+            <th>Action </th>
+        </tr>
+    </thead>
+    <tbody style="color:#FFC1C1">
+        @foreach (var x in Model)
+        {
+<tr>
+    <td>@x.Name</td>
+    <td>@x.Price</td>
+    <td>@x.Category.Name</td>
+    <td>
+        @if (x.ImageUrl != null)
+        {
+<img src="/@x.ImageUrl" style="width:100px" />}
+    </td>
+    <td>
+        <a asp-action="Update" asp-route-id="@x.Id" class="btn btn-success">
+
+            <i class="far fa-edit"></i> Edit
+        </a>
+        <a asp-action="Delete" asp-route-id="@x.Id" class="btn btn-danger">
+            <i class="fas fa-trash-alt"></i> Delete
+        </a>
+    </td>
+</tr>}
+    </tbody>
+</table>
+
+<div>
+    <ul class="pagination">
+        <li class="page-item @(ViewBag.PageIndex==null? "disabled":"")">
+            <a class="page-link" asp-action="Index" asp-route-page="1">&laquo;</a>
+        </li>
+
+        @for (var i = 1; i <= ViewBag.PageSum; i++)
+        {
+<li class="page-item @(ViewBag.PageIndex==i? "active": "")">
+    <a class="page-link" asp-action="Index" asp-route-page="@i">@i</a>
+
+</li>            }
+
+        <li class="page-item @(ViewBag.PageIndex==ViewBag.PageSum? "disabled":"")">
+            <a class="page-link" asp-action="Index" asp-route-page="@ViewBag.PageSum">&raquo;</a>
+        </li>
+    </ul>
+</div>
